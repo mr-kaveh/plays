@@ -1,0 +1,5 @@
+---
+- name: where am i
+  debug:
+    msg: "I am task A"
+- include: b.yml

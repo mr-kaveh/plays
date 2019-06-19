@@ -1,0 +1,4 @@
+---
+- name: who am i 
+  debug:
+    msg: "I am task B"

@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+    - name: Copy Files
+      copy:
+        src: /etc/modprobe.d/hfs.conf
+        dest: /home/hossein/hfs.conf
+  
