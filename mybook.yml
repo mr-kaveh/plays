@@ -1,0 +1,14 @@
+---
+title: My Book
+author: 
+  first_name: John 
+  last_name: Doe
+chapters:
+  - number: 1
+    title: Chapter 1 title
+    pages: 10
+  
+  - number: 2
+    title: Chapter 2 title
+    pages: 20
+...

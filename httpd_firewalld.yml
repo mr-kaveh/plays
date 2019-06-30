@@ -1,0 +1,46 @@
+---
+- name: httpd and firewalld services
+  hosts: localhost
+  gather_facts: False
+  become: True
+  tasks:
+  - block:
+    - name: Installs the latest httpd 
+      yum:
+        name: httpd
+        state: latest
+    - name: Installs Firewalld 
+      yum:
+        name: firewalld
+        state: latest
+  - block:
+    - name: Firewalld permits httpd service
+      firewalld:
+        service: httpd
+        permanent: True
+        state: enabled
+        immediate: True
+  - block:
+    - name: Enables and runs httpd
+      service:
+        name: httpd
+        enabled: True
+        state: started
+    - name: Enables and Starts firewalld
+      service:
+        name: firewalld
+        enabled: True
+        state: started
+  - block:
+    - name: populate index.html
+      copy:
+        content: 'Welcome to My New Website\n'
+        dest: /var/www/html/index.html
+
+- name: Test Content
+  hosts: localhost
+  tasks:
+    - name: Connects to Internet
+      uri:
+        url: http://localhost
+        status_code: 200
