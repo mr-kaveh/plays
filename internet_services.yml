@@ -1,0 +1,73 @@
+---
+- name: Internet Services
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - block:
+    - name: Package httpd
+      yum:
+        name: httpd
+        state: latest
+  - block:
+    - name: Package firewalld
+      yum:
+        name: firewalld
+        state: latest
+  - block:
+    - name: Package php
+      yum:
+        name: php
+        state: latest
+  - block:
+    - name: Package php-mysql
+      yum:
+        name: php-mysql
+        state: latest
+  - block:
+    - name: Package mariadb
+      yum:
+        name: mariadb
+        state: latest
+################Firewall#######################
+
+  - block:
+    - name: Firewall
+      firewalld:
+        service: httpd
+        permanent: true
+        state: enabled
+        immediate: true
+################Services#######################
+  - block:
+    - name: Service firewalld
+      service:
+        name: firewalld
+        enabled: true
+        state: started
+  - block:
+    - name: Service httpd
+      service:
+        name: httpd
+        enabled: true
+        state: started
+  - block:
+    - name: Service mariadb
+      service:
+        name: mariadb
+        enabled: true
+        state: started
+################Content######################
+  - block:
+    - name: Content
+      get_url:
+        url: http://localhost/grading/var/www/html/index.php
+        dest: /var/www/html/index.php
+        mode: 0644 
+- name: Test Content
+  hosts: localhost
+  tasks:
+  - name: Connects to Internet
+    uri:
+      url: http://localhost
+      status_code: 200
+
