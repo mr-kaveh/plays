@@ -1,0 +1,10 @@
+---
+  - name: Show Inventory Variables
+    hosts: local
+    gather_facts: True 
+    tasks:
+      - name: Install {{ package }}
+        yum:
+          name: "{{ package }}"
+          state: latest
+    

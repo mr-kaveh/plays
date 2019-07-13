@@ -1,0 +1,10 @@
+---
+  - name: Show variables
+    hosts: localhost
+    vars:
+      package: httpd
+    tasks:
+    - name: install {{ package }}
+      yum:
+        name: "{{ package  }}"
+        state: latest
