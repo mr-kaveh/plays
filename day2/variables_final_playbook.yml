@@ -1,0 +1,47 @@
+---
+  - name: Installs Apache and starts the services
+    hosts: localhost
+    vars:
+      web_pkg: httpd
+      firewall_pkg: firewalld
+      web_service: httpd
+      firewall_service: firewalld
+      python_pkg: python-httplib2
+      rule: http
+    tasks:
+    - name: Installs The required packages
+      yum:
+        name:
+          - "{{ web_pkg }}"
+          - "{{ firewall_pkg }}"
+          - "{{ python_pkg }}"
+        state: latest
+    - name: Start And Enable The {{ firewall_service }} service
+      service:
+        name: "{{ firewall_service }}"
+        enabled: True
+        state: started
+    - name: Start And Enable The {{ web_service }} service
+      service:
+        name: "{{ web_service }}"
+        enabled: True
+        state: started
+    - name: Create Web Content to be Served
+      copy:
+        content: "This Is The Variables Section on Day2"
+        dest: /var/www/html/index.html
+    - name: Open Port For {{ rule }}
+      firewalld:
+        service: "{{ rule }}"
+        permanent: true
+        immediate: yes
+        state: enabled
+######## New Play for excercise ########
+  - name: Verify that Apache works
+    hosts: localhost
+    tasks:
+    - name: ensures the webserver is reachable
+      uri:
+        url: http://localhost
+        status_code: 200
+

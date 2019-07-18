@@ -1,0 +1,15 @@
+---
+  - name: Shows Register Variable Value with Debug Module
+    hosts: localhost
+    gather_facts: False
+    vars:
+      package: tree
+    tasks:
+    - name: Installs {{ package }}
+      yum:
+        name: "{{ package }}"
+        state: latest
+      register: install_tree
+    - name: Shows Rrgister Variable Value
+      debug:
+        var: install_tree.rc
