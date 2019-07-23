@@ -1,0 +1,9 @@
+---
+  - name: demo facts
+    hosts: localhost
+    tasks:
+    - name: Echoing The facts
+      debug:
+        msg: >
+              the ip for "{{ ansible_fqdn }}" 
+              machine is "{{ ansible_default_ipv4.address }}"

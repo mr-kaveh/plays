@@ -1,0 +1,8 @@
+---
+  - name: install package
+    hosts: localhost
+    tasks:
+    - name: install {{ ansible_local.myfacts.packages.db_package }}
+      debug:
+        msg: >
+          "{{ ansible_local.myfacts.packages.db_package }}" is going to be installed

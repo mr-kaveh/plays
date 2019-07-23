@@ -1,0 +1,9 @@
+### the facts.d Directory should be present in
+### /etc/ansible directory
+[packages]
+web_package=httpd
+db_package=mariadb-server
+
+[user]
+user1=jack
+user2=jill

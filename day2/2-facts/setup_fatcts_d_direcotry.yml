@@ -1,0 +1,16 @@
+---
+  - name: Deploy Custom Facts
+    hosts: localhost
+    vars:
+      facts_directory: /etc/ansible/facts.d
+      custom_fact_file: custom.fact
+    tasks:
+    - name: Creates Remote Directory {{ facts_directory }}
+      file:
+        state: directory
+        recurse: True
+        path: "{{ facts_directory }}"
+    - name: Installs {{ custom_fact_file }} File on the Remote Directory
+      copy:
+        src: "{{ custom_fact_file }}"
+        dest: "{{ facts_directory }}"
