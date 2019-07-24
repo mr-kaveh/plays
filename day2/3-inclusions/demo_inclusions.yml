@@ -1,0 +1,12 @@
+---
+  - name: Inclusions Demo
+    hosts: localhost
+    gather_facts: False
+    vars:
+      package: httpd
+      service: htpd
+      state: started
+    tasks:
+    - name: Includes the task
+      include: tasks/packages.yml
+    

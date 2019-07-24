@@ -1,0 +1,33 @@
+---
+  - name: Lab managing Includes
+    hosts: localhost
+    vars:
+      rule: http
+    tasks:
+    - name: include var files
+      include_vars: vars/vars.yml
+    - name: include the environment filw
+      include: tasks/environment.yml
+      vars:
+        package: httpd
+        service: httpd
+        svc_stat: started
+    - name: Installs the firewall
+      yum:
+        name: "{{ firewall_pkg }}"
+        state: latest
+    - name: Starts the firewall
+      service:
+        name: firewalld
+        state: started
+        enabled: True
+    - name: Opens Port for the {{ rule }}
+      firewalld:
+        service: "{{ rule }}"
+        immediate: True
+        permanent: True
+        state: enabled
+    - name: create index.html
+      copy:
+        content: "{{ ansible_fqdn }} has been customized by ansible on the {{ ansible_date_time.date}}\n"
+        dest: /var/www/html/index.html

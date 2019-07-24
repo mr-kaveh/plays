@@ -1,0 +1,15 @@
+---
+  - name: Create Directory in Remote FileServer
+    hosts: localhost
+    tasks:
+    - name: Include Paths file
+      include_vars: paths.yml
+    - name: creates the remote directory
+      file:
+        path: "{{ paths.fileserver  }}"
+        state: directory
+        mode: 0755
+      register: result
+    - name: Show the result
+      debug:
+        var: result
