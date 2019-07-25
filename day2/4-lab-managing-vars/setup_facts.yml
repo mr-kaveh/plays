@@ -1,0 +1,20 @@
+---
+  - name: Install Custom Facts
+    hosts: localhost
+    vars:
+      fact_file: custom.fact
+      remote_dir: /etc/ansible/facts.d
+    tasks:
+    - name: creates the remote directory
+      file:
+        state: directory
+        recurse: yes
+        path: "{{  remote_dir  }}" 
+    - name: Places the custom facts file
+      copy:
+        dest: "{{  remote_dir  }}/{{ fact_file  }}"
+        src: "{{ fact_file  }}"
+    ## After the execution of the playbook
+    ## check if your custom.fact has been 
+    ## copied successfuly with the following:
+    ## ansible localhost -m setup -a 'filter=ansible_local' -c local

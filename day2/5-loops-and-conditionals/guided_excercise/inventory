@@ -1,0 +1,16 @@
+[local]
+localhost
+
+[web]
+web.example.com
+
+[databases]
+db.example.com
+
+[servers:children]
+local
+web
+databases
+
+[servers:vars]
+package=httpd

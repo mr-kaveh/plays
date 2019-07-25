@@ -1,0 +1,12 @@
+---
+  # installs mariadb-server as long as
+  # there is enough space on the device
+  - hosts: localhost
+    tasks:
+    - name:
+      yum:
+        name: mariadb-server
+        state: latest
+      with_items: "{{ ansible_mounts }}"
+      when: item.mount == "/" and item.size_available > 300000000
+

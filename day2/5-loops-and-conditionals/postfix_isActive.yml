@@ -1,0 +1,13 @@
+---
+  - name: Test Postfix Activation
+    hosts: localhost
+    tasks:
+    - name: checks if postfix is active
+      command: /usr/bin/systemctl is-active postfix
+      ignore_errors: True
+      register: result
+    - name: stop postfix if it is running
+      service:
+        name: postfix
+        state: stopped
+      when: result.rc == 0

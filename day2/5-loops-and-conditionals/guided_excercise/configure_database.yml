@@ -1,0 +1,19 @@
+---
+  - name: Installs Extra Package
+    yum:
+      name: "{{ extra_packages }}"
+  - name: Downloads the conf file
+    get_url:
+      url: https://filebin.net/ijawe84iwpl8m3fd/my.cnf 
+      dest: "{{ configure_database_path }}"
+      owner: mysql
+      group: mysql
+      mode: 0644
+      seuser: system_u
+      setype: mysql_etc_t
+      force: True
+  - name: starts the service
+    service:
+      name: "{{ db_service }}"
+      state: started
+      enabled: True

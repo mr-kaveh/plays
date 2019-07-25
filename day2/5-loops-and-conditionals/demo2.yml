@@ -1,0 +1,10 @@
+---
+  - hosts: localhost
+    tasks:
+    - shell: echo "Item {{ item }}"
+      with_items:
+        - one
+        - two
+      register: echo
+    - debug: 
+        var: echo

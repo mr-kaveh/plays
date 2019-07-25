@@ -1,0 +1,30 @@
+---
+  - name: lab playbook
+    hosts: localhost
+    vars:
+      firewall: firewalld
+    tasks:
+    - name: include var files
+      include_vars: vars/main.yml
+    - name: include task files
+      include: tasks/main.yml
+    - name: Installs the latest version of {{ firewall }}
+      yum:
+        name: "{{ firewall }}"
+        state: latest
+    - name: Starts The {{ firewall }}  Service
+      service:
+        name: "{{ firewall }}"
+        state: started
+        enabled: True
+    - name: Opens port for WebServer
+      firewalld:
+        service: httpd
+        state: enabled
+        permanent: True
+        immediate: True
+    - name: Populates the index.html
+      copy:
+        dest: "{{ web_root }}/index.html"
+        content: "{{ ansible_fqdn }} ({{ ansible_default_ipv4.address }} has been customized by Ansible\n"
+
