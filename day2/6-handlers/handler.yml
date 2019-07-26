@@ -1,0 +1,24 @@
+---
+  - name: Handler Demo
+    hosts: localhost
+    gather_facts: False
+    become: True
+    become_method: sudo
+    remote_user: dave
+    tasks:
+    - name: copy demo.example.com config file
+      copy:
+        src: /var/lib/templates/demo.example.com.template
+        dest: /etc/httpd/conf.d/demo.example.com.conf
+      notify:
+        - restart_apache
+        - restart_mariadb
+    handlers:
+    - name: restart_apache
+      service:
+        name: htpd
+        state: restarted
+    - name: restart_mariadb
+      service: 
+        name: mariadb
+        state: restarted
