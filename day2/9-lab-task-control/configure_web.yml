@@ -1,0 +1,33 @@
+---
+  - name: check for httpd package
+    shell: rpm -q httpd
+    register: rpm_check
+    failed_when: rpm_check.rc == 1
+
+  - block:
+    - name: get url file
+      get_url:
+        url: "{{ https_uri }}"
+        dest: /etc/httpd/conf.d/
+    - name: create ssl dir
+      file:
+        dest: /etc/httpd/conf.d/ssl
+        mode: 0755
+        state: directory
+    - name: create logs dir
+      file:
+        dest: /var/www/html/logs
+        mode: 0755
+        state: directory
+    - name: check for ssl.conf
+      stat:
+        path: /etc/httpd/conf.d/ssl.conf
+      register: ssl_file
+    - name: Backup existing ssl.conf
+      shell: mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.bak
+      when: ssl_file.stat.exists
+    - name: retrieve ssl cert
+      unarchive:
+        src: "{{ ssl_uri }}"
+        dest: /etc/httpd/conf.d/ssl/
+        copy: False
