@@ -1,0 +1,42 @@
+---
+  - name: Handlers
+    hosts: localhost
+    vars:
+      db_packages:
+        - mariadb-server
+        - MySQL-python
+      db_service: mariadb
+      src_file: "http://somesite.com/my.cnf.template"
+      dst_file: /etc/my.cnf
+    tasks:
+      - name: Install {{ db_packages }} package
+        yum:
+          name: "{{ item }}"
+        with_items: "{{ db_packages }}"
+        notify:
+          - start_service
+      - name: Download and Install {{ dst_file }}
+        get_url:
+          url: "{{ src_file  }}"
+          dest: /etc/my.cnf
+          owner: mysql
+          group: mysql
+          force: True
+        notify:
+          - restart_service
+          - set_password
+
+
+    handlers:
+      - name: start_service
+        service:
+          name: "{{ db_service }}"
+          state: started
+      - name: restart_service
+        service:
+          name: "{{ db_service }}"
+          state: restarted
+      - name: set_password
+        mysql_user:
+          name: root
+          password: redhat
