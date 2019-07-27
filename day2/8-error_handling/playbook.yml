@@ -1,0 +1,30 @@
+---
+  - name: error handling
+    hosts: local
+    become: True
+    become_method: sudo
+    remote_user: dave
+    vars:
+      web_package: http
+      db_package: mariadb-server
+      db_service: mariadb
+    tasks:
+    - name: Check The Installation of the {{ web_package }}
+      command: /usr/bin/yum list installed "{{ web_package }}"
+      register: command_result
+      ignore_errors: True
+    - name: Check The Installation of the {{ db_package }}
+      command: /usr/bin/yum list installed "{{ db_package }}"
+      register: db_install_check
+      ignore_errors: True
+    - name: Install {{ web_package }}
+      yum:
+        name: "{{ web_package }}"
+        state: latest
+      ignore_errors: True
+    - name: Install {{ db_package }}
+      yum:
+        name: "{{ db_package }}"
+        state: latest
+      #when: "'Error' in command_result.stdout"
+      changed_when: db_install_check.rc == 0
