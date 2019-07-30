@@ -1,0 +1,9 @@
+wlecome to {{ ansible_hostname }}. ({{ansible_date_time.date}})
+
+{% for myhost in groups['myhosts'] %}
+{{ myhost }}
+{% endfor %}
+
+This system is for use by those wearing {{ color }}
+
+{{ ansible_managed }}

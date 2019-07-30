@@ -1,0 +1,13 @@
+[web]
+web.example.com
+
+[myhosts]
+localhost
+
+[servers:children]
+local
+web
+
+
+[servers:vars]
+package=httpd

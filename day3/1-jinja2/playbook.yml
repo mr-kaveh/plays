@@ -1,0 +1,13 @@
+---
+  - name: demo templates
+    hosts: localhost
+    become: true
+    tasks:
+    - name: template render
+      template:
+        dest: /etc/motd
+        src: motd.j2
+        owner: root
+        mode: 0664
+      vars:
+        color: Green
