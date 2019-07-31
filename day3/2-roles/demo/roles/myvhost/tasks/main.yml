@@ -1,0 +1,24 @@
+---
+# tasks file for roles/myvhost
+  - name: Install httpd
+    yum:
+      name: httpd
+      state: latest
+  - name: start enable httpd
+    service:
+      name: httpd
+      state: started
+      enabled: True
+  - name: deliver html content
+    copy:
+      src: html/
+      dest: "/var/www/vhosts/{{ ansible_hostname }}"
+  - name: template vhost file
+    template:
+      src: vhost.conf.j2
+      dest: /etc/httpd/conf.d/vhost.conf
+      owner: root
+      group: root
+      mode: 0644
+    notify:
+      - restart httpd
