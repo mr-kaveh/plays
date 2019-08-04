@@ -1,0 +1,12 @@
+---
+  - name: Test role
+    hosts: myhosts 
+    pre_tasks:
+      - debug:
+          msg: 'Starts web server config'
+    roles:
+      - myvhost
+
+    post_tasks:
+       - debug:
+          msg: 'Web Server has been configured'

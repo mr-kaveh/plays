@@ -1,0 +1,6 @@
+---
+  - name: demo role
+    hosts: all
+    roles:
+      - role: myrole
+        system_user: mr.hdavoodi@kdomain.kserver.com
